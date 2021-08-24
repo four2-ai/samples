@@ -1,0 +1,15 @@
+{
+  "name": "node-features",
+  "version": "1.0.0",
+  "description": "Sample code for accessing the features of tracked users.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Rian Finnegan",
+  "license": "MIT",
+  "dependencies": {
+    "promise-fn-retry": "^1.0.10",
+    "signalbox.js": "^1.3.6"
+  }
+}
