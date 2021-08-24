@@ -1,6 +1,6 @@
 # NodeJS - Feature Iteration
 
-In this sample, we show how to access the healthScore Feature for all applicable Tracked Users.
+In this sample, we show how to access the Health Score Feature for all applicable tracked users.
 
 ## Preparing your environment
 
@@ -22,7 +22,7 @@ node --version
 ### Install the dependencies
 
 ```sh
-cd samples
+cd samples/node-features
 npm install
 ```
 
@@ -38,11 +38,11 @@ If you don't have an API Key, you can create one in the app.
 
 Copy the Base URL and Api Key into the sample code at index.js
 
-> In this sample, we cache the access token. When exchanging an API Key for an Access Token, it is good practice to cache and re-use the token. Exchanging the token too many times will results in errors due to rate-limitations.
+> In this sample, we cache the access token. When exchanging an API Key for an access token, it is good practice to cache and re-use the token. Exchanging the API Key too frequently will results in a rate-limit error.
 
 ## Running the sample
 
-When you run the sample, you should see a list of tracked users and their associated healthScore.
+When you run the sample, you should see a list of tracked users and their associated health score.
 
 ```sh
 node index.js
