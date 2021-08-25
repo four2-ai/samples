@@ -13,7 +13,6 @@ const FEATURE_ID = "healthScore";
 
 // we use async methods when possible.
 const main = async () => {
-
   // Start API Key exchange
   let tokenResponse = null;
   if (fs.existsSync(".token.json")) {
@@ -31,7 +30,6 @@ const main = async () => {
   const token = tokenResponse.access_token;
   // end API Key exchange
 
-
   let page = 1;
   let hasMoreItems = true;
 
@@ -41,66 +39,53 @@ const main = async () => {
     id: FEATURE_ID,
   });
 
-  console.log(`This Feature is named ${feature.name}`)
+  console.log(`This Feature is named ${feature.name}`);
 
   while (hasMoreItems) {
     // this response is paginated.
-    const trackedUsers = await four2.features.fetchFeatureTrackedUsersAsync(
-      {
+    const trackedUserFeatures =
+      await four2.features.fetchFeatureTrackedUserFeaturesAsync({
         page: page++,
         token,
         id: feature.id,
-      }
-    );
-  
-  
-  // console.log(trackedUsers)
-  //{
-  // items: [
-  //   {
-  //
-  //   }
-  // ],
-  // pagination: {
-  //   pageCount: 1,
-  //   totalItemCount: 2,
-  //   pageNumber: 1,
-  //   hasPreviousPage: false,
-  //   hasNextPage: false,
-  //   isFirstPage: true,
-  //   isLastPage: true
-  // }
-  //}
+      });
 
-    for (let trackedUser of trackedUsers.items) {
-      // this loop may run many times.
-      // using a try/catch patterns helps prevent transient errors from interrupting the process.
-      try {
+    // console.log(trackedUserFeatures);
+    //{
+    // items: [
+    //{
+    //   version: 2,
+    //   trackedUserId: 169681,
+    //   trackedUser: [Object],
+    //   featureId: 9,
+    //   feature: [Object],
+    //   value: 'Good',
+    //   id: 12922,
+    //   created: '2021-07-30T05:15:57.9933333+00:00',
+    //   lastUpdated: '2021-07-30T05:15:57.9933333+00:00'
+    // }
+    // ],
+    // pagination: {
+    //   pageCount: 1,
+    //   totalItemCount: 2,
+    //   pageNumber: 1,
+    //   hasPreviousPage: false,
+    //   hasNextPage: false,
+    //   isFirstPage: true,
+    //   isLastPage: true
+    // }
+    //}
 
-        // you can use a retry pattern to mitigate transient errors.
-        const featureValuesResponse = await retry(() =>
-          // this async method returns the feature value and related information.
-          four2.features.fetchTrackedUserFeatureValuesAsync({
-            token,
-            id: trackedUser.id,
-            feature: FEATURE_ID,
-          })
-        );
+    for (let trackedUserFeature of trackedUserFeatures.items) {
+      console.log(
+        `${trackedUserFeature.trackedUser.commonId} has ${trackedUserFeature.feature.name} value: ${trackedUserFeature.value}`
+      );
 
-        console.log(`${trackedUser.commonId} has ${featureValuesResponse.feature.name} value: ${featureValuesResponse.value}`);
-
-        // Your code goes here.
-        //
-        //
-        //
-
-      } catch (ex) {
-        console.log(ex);
-      }
+      // Your code goes here.
     }
 
-    hasMoreItems = trackedUsers.pagination.hasNextPage;
-    hasMoreItems = false; // prevent sample from running too long.
+    hasMoreItems = trackedUserFeatures.pagination.hasNextPage;
+    hasMoreItems = false; // prevent sample from running too long - uncomment to continue.
   }
 };
 
